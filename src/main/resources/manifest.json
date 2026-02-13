@@ -1,0 +1,15 @@
+{
+  "Group" : "com.example",
+  "Authors": [
+    {
+      "Name": "Sossil"
+    },
+    {
+      "Name": "okiabetter"
+    }
+  ],
+  "Name" : "IGT",
+  "Version" : "1.0.0",
+  "Main" : "com.example.plugin.IGTPlugin",
+  "IncludesAssetPack" : true
+}
