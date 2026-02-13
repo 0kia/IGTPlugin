@@ -39,17 +39,20 @@ public class IGTPlugin extends JavaPlugin {
     }
 
     public static void onPlayerReady(PlayerReadyEvent event){
-        Ref<EntityStore> ref = event.getPlayer().getReference();
-        Store<EntityStore> store = event.getPlayerRef().getStore();
-        var timerType = TimerComponent.getComponentType();
-        assert ref != null;
-        if (store.getComponent(ref, timerType) == null){
-            store.addComponent(ref, timerType);
-        }
-        TimerComponent timer = (TimerComponent) store.getComponent(ref, timerType);
-        assert timer != null;
-        LOGGER.atInfo().log("Timer started");
-        timer.setTimerRunning(true);
+        World world = event.getPlayer().getWorld();
+        world.execute(() -> {
+            Ref<EntityStore> ref = event.getPlayer().getReference();
+            Store<EntityStore> store = event.getPlayerRef().getStore();
+            var timerType = TimerComponent.getComponentType();
+            assert ref != null;
+            if (store.getComponent(ref, timerType) == null){
+                store.addComponent(ref, timerType);
+            }
+            TimerComponent timer = (TimerComponent) store.getComponent(ref, timerType);
+            assert timer != null;
+            LOGGER.atInfo().log("Timer started");
+            timer.setTimerRunning(true);
+        });
     }
 
 }
