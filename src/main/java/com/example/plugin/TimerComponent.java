@@ -58,6 +58,10 @@ public class TimerComponent implements Component<EntityStore> {
         isTimerRunning = false;
     }
 
+    public boolean isFinished(){
+        return this.finished;
+    }
+
     @NullableDecl
     @Override
     public TimerComponent clone() {
