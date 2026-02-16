@@ -50,7 +50,7 @@ public class IGTPlugin extends JavaPlugin {
             }
             TimerComponent timer = (TimerComponent) store.getComponent(ref, timerType);
             assert timer != null;
-            LOGGER.atInfo().log("Timer started");
+            LOGGER.atInfo().log("Timer init");
             timer.setTimerRunning(true);
         });
     }
