@@ -1,6 +1,5 @@
 package com.example.plugin;
 
-import com.hypixel.hytale.builtin.adventure.memories.MemoriesPlugin;
 import com.hypixel.hytale.builtin.adventure.memories.component.PlayerMemories;
 import com.hypixel.hytale.builtin.adventure.memories.memories.npc.NPCMemory;
 import com.hypixel.hytale.component.ArchetypeChunk;
@@ -12,10 +11,8 @@ import com.hypixel.hytale.component.system.tick.EntityTickingSystem;
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.entity.EntityUtils;
 import com.hypixel.hytale.server.core.entity.entities.Player;
-import com.hypixel.hytale.server.core.entity.movement.MovementStatesComponent;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import com.hypixel.hytale.server.npc.movement.MovementState;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
 import javax.annotation.Nonnull;
@@ -27,7 +24,6 @@ public class PlayerTickSystem extends EntityTickingSystem<EntityStore> {
     private final Query<EntityStore> query;
     public IGTUIBuilder igtUI = null;
     public static TimerComponent timercomponent = null;
-    private boolean timerRunning = false;
     private Player player;
 
     public PlayerTickSystem() {
