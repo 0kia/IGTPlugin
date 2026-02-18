@@ -1,5 +1,5 @@
 {
-  "Group" : "com.example",
+  "Group" : "com.HTSR",
   "Authors": [
     {
       "Name": "Sossil"
@@ -10,6 +10,6 @@
   ],
   "Name" : "IGT",
   "Version" : "1.0.0",
-  "Main" : "com.example.plugin.IGTPlugin",
+  "Main" : "com.HTSR.plugin.IGTPlugin",
   "IncludesAssetPack" : true
 }

@@ -1,4 +1,4 @@
-package com.example.plugin;
+package com.HTSR.plugin;
 
 import com.hypixel.hytale.builtin.adventure.memories.component.PlayerMemories;
 import com.hypixel.hytale.builtin.adventure.memories.memories.npc.NPCMemory;

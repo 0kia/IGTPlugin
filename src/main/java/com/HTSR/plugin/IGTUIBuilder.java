@@ -1,4 +1,4 @@
-package com.example.plugin;
+package com.HTSR.plugin;
 
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.server.core.Message;

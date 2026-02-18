@@ -1,4 +1,4 @@
-package com.example.plugin;
+package com.HTSR.plugin;
 
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -44,15 +44,23 @@ public class IGTPlugin extends JavaPlugin {
         World world = event.getPlayer().getWorld();
         assert world != null;
         world.execute(() -> {
+
+            // Grab player
             Ref<EntityStore> ref = event.getPlayer().getReference();
             assert ref != null;
             Store<EntityStore> store = event.getPlayerRef().getStore();
             PlayerRef playerRef = store.getComponent(ref, PlayerRef.getComponentType());
             assert playerRef != null;
+
+            // Hud build
             IGTUIBuilder igtUI = new IGTUIBuilder(playerRef, "00:00:00:00");
             event.getPlayer().getHudManager().setCustomHud(playerRef, igtUI);
+
+            // Pause world and start looking for Interact
             world.setPaused(true);
             IGTPlugin.checkForInteract.set(true);
+
+            // build timer component
             var timerType = TimerComponent.getComponentType();
             if (store.getComponent(ref, timerType) == null){
                 store.addComponent(ref, timerType);

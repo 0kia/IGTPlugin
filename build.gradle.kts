@@ -2,7 +2,7 @@ plugins {
     id("java")
 }
 
-group = "com.example"
+group = "com.HTSR"
 version = "1.0"
 
 repositories {
