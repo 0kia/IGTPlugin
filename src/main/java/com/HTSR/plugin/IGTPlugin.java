@@ -13,12 +13,12 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class IGTPlugin extends JavaPlugin {
     public static AtomicBoolean checkForInteract = new AtomicBoolean();
+    public static AtomicBoolean firstJoin = new AtomicBoolean(true);
     private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
 
     public IGTPlugin(@NonNullDecl JavaPluginInit init) {
@@ -59,10 +59,13 @@ public class IGTPlugin extends JavaPlugin {
 
             // Pause world (if not temple) and start looking for Interact
             if(!world.getName().contains("Forgotten_Temple")){
-                world.setPaused(true);
+                //Don't pause if the world is default or first join
+                if (!world.getName().equals("default") || firstJoin.get()) {
+                    world.setPaused(true);
+                }
             }
-
             IGTPlugin.checkForInteract.set(true);
+            firstJoin.set(false);
 
             // build timer component
             var timerType = TimerComponent.getComponentType();
