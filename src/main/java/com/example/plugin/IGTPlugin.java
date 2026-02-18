@@ -7,6 +7,7 @@ import com.hypixel.hytale.server.core.event.events.player.PlayerReadyEvent;
 import com.hypixel.hytale.server.core.io.adapter.PacketAdapters;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
+import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
@@ -41,13 +42,18 @@ public class IGTPlugin extends JavaPlugin {
 
     public static void onPlayerReady(PlayerReadyEvent event){
         World world = event.getPlayer().getWorld();
+        assert world != null;
         world.execute(() -> {
+            Ref<EntityStore> ref = event.getPlayer().getReference();
+            assert ref != null;
+            Store<EntityStore> store = event.getPlayerRef().getStore();
+            PlayerRef playerRef = store.getComponent(ref, PlayerRef.getComponentType());
+            assert playerRef != null;
+            IGTUIBuilder igtUI = new IGTUIBuilder(playerRef, "00:00:00:00");
+            event.getPlayer().getHudManager().setCustomHud(playerRef, igtUI);
             world.setPaused(true);
             IGTPlugin.checkForInteract.set(true);
-            Ref<EntityStore> ref = event.getPlayer().getReference();
-            Store<EntityStore> store = event.getPlayerRef().getStore();
             var timerType = TimerComponent.getComponentType();
-            assert ref != null;
             if (store.getComponent(ref, timerType) == null){
                 store.addComponent(ref, timerType);
             }
