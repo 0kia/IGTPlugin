@@ -6,13 +6,10 @@ import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.hud.CustomUIHud;
 import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
-import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
 import javax.annotation.Nonnull;
-import java.time.Instant;
-import java.time.temporal.ChronoField;
 
 public class IGTUIBuilder extends CustomUIHud {
     private final String timeString;
@@ -31,9 +28,6 @@ public class IGTUIBuilder extends CustomUIHud {
 
             Player player = storeRef.getStore().getComponent(storeRef, Player.getComponentType());
             assert player != null;
-
-            World world = player.getWorld();
-            String formattedTime = "0";
 
             uiCommandBuilder.append("Hud/Overlay.ui");
             uiCommandBuilder.set("#Timer.TextSpans", Message.raw(timeString));
