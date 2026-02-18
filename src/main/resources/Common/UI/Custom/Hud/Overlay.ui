@@ -1,13 +1,14 @@
 Group {
-    LayoutMode: Bottom;
-    Anchor: (Left: 1 , Bottom: 1);
+  LayoutMode: Left;
+  Anchor: (Left: 10);
 
-    Group #IGTPanel {
-      Background: (Color: #00000000);
-      Anchor: (Left: 0, Width: 800, Height: 50);
-      Label #Timer {
-        Text: "IGT";
-        Style: (TextColor: #ffffff, FontSize: 24, Alignment: Center);
-      }
+  Group #IGTPanel {
+    Background: (Color: #00000000);
+    LayoutMode: Bottom;
+    Anchor: (Bottom: 2);
+    Label #Timer {
+      Text: "IGT";
+      Style: (TextColor: #ffffff, FontSize: 24, Alignment: Center);
     }
+  }
 }
