@@ -88,20 +88,23 @@ public class PlayerTickSystem extends EntityTickingSystem<EntityStore> {
     }
 
     private void updateTimerHUD(PlayerRef playerRef, float elapsedTime) {
-        String timeString = formatElapsedTime(elapsedTime);
-        hudBuild(playerRef, timeString);
+        String timeStringIGT = formatIGT(elapsedTime);
+        String timeStringRTA = formatRTA(System.currentTimeMillis() - IGTPlugin.startTime);
+        hudBuild(playerRef, timeStringIGT, timeStringRTA);
         player.getHudManager().setCustomHud(playerRef, igtUI);
-        igtUI.updateTime(timeString);
+        igtUI.updateTimeIGT(timeStringIGT);
+        if(timercomponent.getIsTimerRunning())
+            igtUI.updateTimeRTA(timeStringRTA);
     }
 
-    private void hudBuild(PlayerRef playerRef, String timeString){
+    private void hudBuild(PlayerRef playerRef, String timeStringIGT, String timeStringRTA){
         if (igtUI == null){
             LOGGER.atInfo().log("Hud Is Null, Setting...");
-            igtUI = new IGTUIBuilder(playerRef, timeString);
+            igtUI = new IGTUIBuilder(playerRef, timeStringIGT, timeStringRTA);
         }
     }
 
-    private String formatElapsedTime(float elapsedTime) {
+    private String formatIGT(float elapsedTime) {
         int totalSeconds = (int) elapsedTime;
         int hours = totalSeconds / 3600;
         int minutes = (totalSeconds % 3600) / 60;
@@ -109,6 +112,16 @@ public class PlayerTickSystem extends EntityTickingSystem<EntityStore> {
         int milliseconds = (int) ((elapsedTime - totalSeconds) * 1000);
 
         return String.format("%02d:%02d:%02d.%03d", hours, minutes, seconds, milliseconds);
+    }
+
+    private String formatRTA(long elapsedMillis) {
+        long hours = elapsedMillis / 3_600_000; // 1000 * 60 * 60
+        long minutes = (elapsedMillis % 3_600_000) / 60_000;
+        long seconds = (elapsedMillis % 60_000) / 1_000;
+        long milliseconds = elapsedMillis % 1_000;
+
+        return String.format("%02d:%02d:%02d.%03d",
+                hours, minutes, seconds, milliseconds);
     }
 
 }

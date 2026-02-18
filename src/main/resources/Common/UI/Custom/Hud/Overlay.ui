@@ -6,9 +6,15 @@ Group {
     Background: (Color: #00000000);
     LayoutMode: Bottom;
     Anchor: (Bottom: 2);
-    Label #Timer {
+    Label #TimerIGT {
       Text: "IGT";
-      Style: (TextColor: #ffffff, FontSize: 24, Alignment: Center);
+      Style: (TextColor: #ffffff, FontSize: 24, Alignment: Center, RenderBold: true);
+    }
+
+    Label #TimerRTA {
+      Text: "RTA";
+      Style: (TextColor: #ffffff, FontSize: 16, Alignment: Center, RenderBold: true);
     }
   }
+
 }

@@ -12,11 +12,13 @@ import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 import javax.annotation.Nonnull;
 
 public class IGTUIBuilder extends CustomUIHud {
-    private final String timeString;
+    private final String timeStringIGT;
+    private final String timeStringRTA;
 
-    public IGTUIBuilder(@Nonnull PlayerRef playerref, String timeString) {
+    public IGTUIBuilder(@Nonnull PlayerRef playerref, String timeStringIGT, String timeStringRTA) {
         super(playerref);
-        this.timeString = timeString;
+        this.timeStringIGT = timeStringIGT;
+        this.timeStringRTA = timeStringRTA;
 
     }
 
@@ -30,13 +32,20 @@ public class IGTUIBuilder extends CustomUIHud {
             assert player != null;
 
             uiCommandBuilder.append("Hud/Overlay.ui");
-            uiCommandBuilder.set("#Timer.TextSpans", Message.raw(timeString));
+            uiCommandBuilder.set("#TimerIGT.TextSpans", Message.raw(timeStringIGT));
+            uiCommandBuilder.set("#TimerRTA.TextSpans", Message.raw(timeStringRTA));
         }
     }
 
-    public void updateTime(String timeString){
+    public void updateTimeIGT(String timeString){
         UICommandBuilder builder = new UICommandBuilder();
-        builder.set("#Timer.TextSpans", Message.raw(timeString));
+        builder.set("#TimerIGT.TextSpans", Message.raw(timeString));
+        update(false, builder);
+    }
+
+    public void updateTimeRTA(String timeString){
+        UICommandBuilder builder = new UICommandBuilder();
+        builder.set("#TimerRTA.TextSpans", Message.raw(timeString));
         update(false, builder);
     }
 }
