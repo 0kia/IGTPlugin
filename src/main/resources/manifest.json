@@ -11,5 +11,6 @@
   "Name" : "IGT",
   "Version" : "1.0.0",
   "Main" : "com.HTSR.plugin.IGTPlugin",
-  "IncludesAssetPack" : true
+  "IncludesAssetPack" : true,
+  "ServerVersion": "2026.02.17-255364b8e"
 }

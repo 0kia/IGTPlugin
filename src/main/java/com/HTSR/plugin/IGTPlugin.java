@@ -13,6 +13,7 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
@@ -56,8 +57,11 @@ public class IGTPlugin extends JavaPlugin {
             IGTUIBuilder igtUI = new IGTUIBuilder(playerRef, "00:00:00:00");
             event.getPlayer().getHudManager().setCustomHud(playerRef, igtUI);
 
-            // Pause world and start looking for Interact
-            world.setPaused(true);
+            // Pause world (if not temple) and start looking for Interact
+            if(!world.getName().contains("Forgotten_Temple")){
+                world.setPaused(true);
+            }
+
             IGTPlugin.checkForInteract.set(true);
 
             // build timer component
