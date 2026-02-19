@@ -25,6 +25,7 @@ public class PlayerTickSystem extends EntityTickingSystem<EntityStore> {
     public IGTUIBuilder igtUI = null;
     public static TimerComponent timercomponent = null;
     private Player player;
+    private static long finishTime = 0;
 
     public PlayerTickSystem() {
         this.query = Query.and(Player.getComponentType());
@@ -77,8 +78,9 @@ public class PlayerTickSystem extends EntityTickingSystem<EntityStore> {
         );
 
         if (playerMemories != null && hasDragonFrostMemory(playerMemories)) {
-            LOGGER.atInfo().log("Timer Finished");
+            finishTime = System.currentTimeMillis();
             timercomponent.setFinished(true);
+            LOGGER.atInfo().log("Timer Finished");
         }
     }
 
@@ -94,7 +96,12 @@ public class PlayerTickSystem extends EntityTickingSystem<EntityStore> {
         player.getHudManager().setCustomHud(playerRef, igtUI);
         igtUI.updateTimeIGT(timeStringIGT);
         if(timercomponent.getIsTimerRunning())
-            igtUI.updateTimeRTA(timeStringRTA);
+            if (timercomponent.isFinished()){
+                igtUI.updateTimeRTA(formatRTA(finishTime - IGTPlugin.startTime));
+            }else {
+                igtUI.updateTimeRTA(timeStringRTA);
+            }
+
     }
 
     private void hudBuild(PlayerRef playerRef, String timeStringIGT, String timeStringRTA){
