@@ -54,8 +54,24 @@ public class IGTPlugin extends JavaPlugin {
             PlayerRef playerRef = store.getComponent(ref, PlayerRef.getComponentType());
             assert playerRef != null;
 
+            // build timer component
+            var timerType = TimerComponent.getComponentType();
+            if (store.getComponent(ref, timerType) == null){
+                store.addComponent(ref, timerType);
+            }
+            TimerComponent timer = store.getComponent(ref, timerType);
+            assert timer != null;
+            LOGGER.atInfo().log("Timer init");
+            timer.setTimerRunning(true);
+
+            if (firstJoin.get()){
+                startTime = System.currentTimeMillis();
+            }
+
             // Hud build
-            IGTUIBuilder igtUI = new IGTUIBuilder(playerRef, "00:00:00:00", "00:00:00:00");
+            IGTUIBuilder igtUI = new IGTUIBuilder(playerRef, formatIGT(timer.getTime()), formatRTA(
+                    (timer.isFinished() ? PlayerTickSystem.finishTime : System.currentTimeMillis())
+                                - startTime));
             event.getPlayer().getHudManager().setCustomHud(playerRef, igtUI);
 
             // Pause world (if not temple) and start looking for Interact
@@ -66,22 +82,9 @@ public class IGTPlugin extends JavaPlugin {
                 }
             }
 
-            if (firstJoin.get()){
-                startTime = System.currentTimeMillis();
-            }
-
             IGTPlugin.checkForInteract.set(true);
             firstJoin.set(false);
 
-            // build timer component
-            var timerType = TimerComponent.getComponentType();
-            if (store.getComponent(ref, timerType) == null){
-                store.addComponent(ref, timerType);
-            }
-            TimerComponent timer = store.getComponent(ref, timerType);
-            assert timer != null;
-            LOGGER.atInfo().log("Timer init");
-            timer.setTimerRunning(true);
         });
     }
 
@@ -91,5 +94,25 @@ public class IGTPlugin extends JavaPlugin {
                 world.execute(() -> world.setPaused(false));
             }
         }
+    }
+
+    public static String formatIGT(double elapsedTime) {
+        int totalSeconds = (int) elapsedTime;
+        int hours = totalSeconds / 3600;
+        int minutes = (totalSeconds % 3600) / 60;
+        int seconds = totalSeconds % 60;
+        int milliseconds = (int) ((elapsedTime - totalSeconds) * 1000);
+
+        return String.format("%02d:%02d:%02d.%03d", hours, minutes, seconds, milliseconds);
+    }
+
+    public static String formatRTA(long elapsedMillis) {
+        long hours = elapsedMillis / 3_600_000; // 1000 * 60 * 60
+        long minutes = (elapsedMillis % 3_600_000) / 60_000;
+        long seconds = (elapsedMillis % 60_000) / 1_000;
+        long milliseconds = elapsedMillis % 1_000;
+
+        return String.format("%02d:%02d:%02d.%03d",
+                hours, minutes, seconds, milliseconds);
     }
 }

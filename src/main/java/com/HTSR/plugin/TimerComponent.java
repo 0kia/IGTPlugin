@@ -23,20 +23,20 @@ public class TimerComponent implements Component<EntityStore> {
     public static final BuilderCodec<TimerComponent> CODEC = BuilderCodec
             .builder(TimerComponent.class, TimerComponent::new)
             .append(
-                    new KeyedCodec<>("Timer", Codec.FLOAT),
+                    new KeyedCodec<>("Timer", Codec.DOUBLE),
                     (component, value) -> component.time = value,
                     component -> component.time
             ).add()
             .build();
 
-    float time;
+    double time = 0;
     private boolean isTimerRunning;
     private boolean finished = false;
     public TimerComponent() {
 
     }
 
-    public float getTime() {
+    public double getTime() {
         return time;
     }
 

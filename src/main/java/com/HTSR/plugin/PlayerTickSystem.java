@@ -25,7 +25,7 @@ public class PlayerTickSystem extends EntityTickingSystem<EntityStore> {
     public IGTUIBuilder igtUI = null;
     public static TimerComponent timercomponent = null;
     private Player player;
-    private static long finishTime = 0;
+    static long finishTime = 0;
 
     public PlayerTickSystem() {
         this.query = Query.and(Player.getComponentType());
@@ -89,15 +89,15 @@ public class PlayerTickSystem extends EntityTickingSystem<EntityStore> {
                 .anyMatch(mem -> ((NPCMemory) mem).getNpcRole().contains("Dragon_Frost"));
     }
 
-    private void updateTimerHUD(PlayerRef playerRef, float elapsedTime) {
-        String timeStringIGT = formatIGT(elapsedTime);
-        String timeStringRTA = formatRTA(System.currentTimeMillis() - IGTPlugin.startTime);
+    private void updateTimerHUD(PlayerRef playerRef, double elapsedTime) {
+        String timeStringIGT = IGTPlugin.formatIGT(elapsedTime);
+        String timeStringRTA = IGTPlugin.formatRTA(System.currentTimeMillis() - IGTPlugin.startTime);
         hudBuild(playerRef, timeStringIGT, timeStringRTA);
         player.getHudManager().setCustomHud(playerRef, igtUI);
         igtUI.updateTimeIGT(timeStringIGT);
         if(timercomponent.getIsTimerRunning())
             if (timercomponent.isFinished()){
-                igtUI.updateTimeRTA(formatRTA(finishTime - IGTPlugin.startTime));
+                igtUI.updateTimeRTA(IGTPlugin.formatRTA(finishTime - IGTPlugin.startTime));
             }else {
                 igtUI.updateTimeRTA(timeStringRTA);
             }
@@ -109,26 +109,6 @@ public class PlayerTickSystem extends EntityTickingSystem<EntityStore> {
             LOGGER.atInfo().log("Hud Is Null, Setting...");
             igtUI = new IGTUIBuilder(playerRef, timeStringIGT, timeStringRTA);
         }
-    }
-
-    private String formatIGT(float elapsedTime) {
-        int totalSeconds = (int) elapsedTime;
-        int hours = totalSeconds / 3600;
-        int minutes = (totalSeconds % 3600) / 60;
-        int seconds = totalSeconds % 60;
-        int milliseconds = (int) ((elapsedTime - totalSeconds) * 1000);
-
-        return String.format("%02d:%02d:%02d.%03d", hours, minutes, seconds, milliseconds);
-    }
-
-    private String formatRTA(long elapsedMillis) {
-        long hours = elapsedMillis / 3_600_000; // 1000 * 60 * 60
-        long minutes = (elapsedMillis % 3_600_000) / 60_000;
-        long seconds = (elapsedMillis % 60_000) / 1_000;
-        long milliseconds = elapsedMillis % 1_000;
-
-        return String.format("%02d:%02d:%02d.%03d",
-                hours, minutes, seconds, milliseconds);
     }
 
 }
