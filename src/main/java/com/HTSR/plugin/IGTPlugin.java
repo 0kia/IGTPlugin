@@ -21,6 +21,8 @@ public class IGTPlugin extends JavaPlugin {
     public static AtomicBoolean firstJoin = new AtomicBoolean(true);
     private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
     public static long startTime = 0;
+    public static long finishTime = 0;
+    public static long currentTime = 0;
 
     public IGTPlugin(@NonNullDecl JavaPluginInit init) {
         super(init);
@@ -43,6 +45,12 @@ public class IGTPlugin extends JavaPlugin {
     }
 
     public static void onPlayerReady(PlayerReadyEvent event){
+
+        if (firstJoin.get()){
+            startTime = System.currentTimeMillis();
+        }
+        currentTime = System.currentTimeMillis();
+
         World world = event.getPlayer().getWorld();
         assert world != null;
         world.execute(() -> {
@@ -64,14 +72,9 @@ public class IGTPlugin extends JavaPlugin {
             LOGGER.atInfo().log("Timer init");
             timer.setTimerRunning(true);
 
-            if (firstJoin.get()){
-                startTime = System.currentTimeMillis();
-            }
-
             // Hud build
             IGTUIBuilder igtUI = new IGTUIBuilder(playerRef, formatIGT(timer.getTime()), formatRTA(
-                    (timer.isFinished() ? PlayerTickSystem.finishTime : System.currentTimeMillis())
-                                - startTime));
+                    (timer.isFinished() ? finishTime : currentTime) - startTime));
             event.getPlayer().getHudManager().setCustomHud(playerRef, igtUI);
 
             // Pause world (if not temple) and start looking for Interact
